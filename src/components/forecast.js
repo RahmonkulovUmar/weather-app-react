@@ -2,18 +2,22 @@ import React, { useState } from 'react'
 import { Accordion, AccordionItem, AccordionItemButton, AccordionItemHeading, AccordionItemPanel } from "react-accessible-accordion"
 import './forecast.css';
 
+const weekDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+
 const Forecast = ({data}) => {
+  const dayInAWeek = new Date().getDay();
+  const forecastDays = weekDays.slice(dayInAWeek, weekDays.length).concat(weekDays.slice(0, dayInAWeek));
     return (
         <>
       <div className="title">Daily</div>
       <Accordion allowZeroExpanded className='accordion'>
-        {data.list && data.list.splice(0, 7).map((item, index) => (
+        {data.list && data.list.slice(0, 7).map((item, index) => (
           <AccordionItem key={index}> 
             <AccordionItemHeading>
               <AccordionItemButton>
                 <div className="daily-item">
                   <img src={`icons/${item.weather[0].icon}.png`} className="icon-small" alt="weather" />
-                  <label className="day"></label>
+                  <label className="day">{forecastDays[index]}</label>
                   <label className="f_description">{item.weather[0].description}</label>
                   <label className="min-max">{Math.round(item.main.temp_max)}°C /{Math.round(item.main.temp_min)}°C</label>
                 </div>
